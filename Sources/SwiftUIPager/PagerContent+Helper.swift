@@ -272,8 +272,12 @@ extension Pager.PagerContent {
 
     /// Scale that applies to a particular item
     func scale(for item: PageWrapper<Element, ID>) -> CGFloat {
-        let distance = abs(distance(to: item))
-        return Double(max(interactiveScale, min(1, 1 - distance * scaleIncrement)))
+        let distance = distance(to: item)
+        if distance < 1 {
+            return Double(max(interactiveScale, min(1, 1 - abs(distance) * scaleIncrement)))
+        } else {
+            return 1
+        }
     }
 
     private func distance(to item: PageWrapper<Element, ID>) -> CGFloat {
